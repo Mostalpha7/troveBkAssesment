@@ -1,0 +1,26 @@
+{
+    "name": "troveTest",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon server.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "bcrypt": "^5.0.1",
+        "chalk": "^4.1.1",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "joi": "^17.4.0",
+        "joi-password": "^1.4.5",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.12.10",
+        "nodemon": "^2.0.7",
+        "short-id": "0.1.0-1"
+    }
+}
