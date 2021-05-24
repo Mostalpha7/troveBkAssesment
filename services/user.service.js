@@ -7,7 +7,7 @@ class UserService {
     getProfile(user) {
         return new Promise(async(resolve, reject) => {
             try {
-                const userData = User.findOne({ email: user.email })
+                const userData = await User.findOne({ email: user.email })
                     .then((user) => (user ? user : false))
                     .catch(() => false);
 
@@ -22,6 +22,27 @@ class UserService {
                 resolve(userData);
             } catch (error) {
                 error.source = "Get profile => UserService";
+                return reject(error);
+            }
+        });
+    }
+
+    getProfileByEmail(email) {
+        return new Promise(async(resolve, reject) => {
+            try {
+                const userData = await User.findOne({ email: email })
+                    .then((user) => (user ? user : false))
+                    .catch(() => false);
+
+                if (!userData) {
+                    return reject({
+                        code: 400,
+                        msg: "User not found",
+                    });
+                }
+                resolve(userData);
+            } catch (error) {
+                error.source = "Get profile By Email => UserService";
                 return reject(error);
             }
         });

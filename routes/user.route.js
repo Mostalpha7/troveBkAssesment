@@ -6,7 +6,10 @@ const {
     updateNokDetails,
     updateBankInfo,
     updatePassword,
+    getUser,
 } = require("../controllers/user.controller");
+
+router.get("/", getUser);
 
 router.put("/updateBasicProfile", updateBasicProfile);
 

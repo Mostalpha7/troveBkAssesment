@@ -1,12 +1,18 @@
 const bcrypt = require("bcrypt");
 const ids = require("short-id");
 const jwt = require("jsonwebtoken");
+const Nexmo = require("nexmo");
+
+const WalletService = require("./wallet.service");
 
 const { User } = require("../models/index.shema");
-const WalletService = require("./wallet.service");
-const { confirmPassword } = require("../utils/userUtils");
+const { formartPhoneNumber } = require("../utils/authUtils");
 
 const walletInstance = new WalletService();
+const nexmo = new Nexmo({
+    apiKey: process.env.nexmoApiKey,
+    apiSecret: process.env.nexmoApiSecretKey,
+});
 
 class AuthService {
     signUp(body) {
@@ -36,7 +42,7 @@ class AuthService {
                 body.userId = userId;
 
                 // Save user to db
-                const newUser = await new User(body).save();
+                const newUser = await new User(body).save({});
 
                 if (!newUser) {
                     return reject({
@@ -80,20 +86,6 @@ class AuthService {
                     });
                 }
 
-                // check password
-                const isPasswordMatch = await confirmPassword({
-                    password: body.password,
-                    user: user,
-                });
-
-                if (!isPasswordMatch) {
-                    return reject({
-                        code: 400,
-                        msg: "Invalid password",
-                    });
-                }
-
-                delete user.password;
                 const token = jwt.sign(user.toJSON(), process.env.jwtPrivateKey, {
                     expiresIn: "3d",
                 });
@@ -110,6 +102,66 @@ class AuthService {
                 return reject(error);
             }
         });
+    }
+
+    create2FAuthCode(phoneNumber) {
+        return new Promise(async(resolve, reject) => {
+            try {
+                const formarted = formartPhoneNumber(phoneNumber);
+
+                nexmo.verify.request({
+                        number: `${formarted}`,
+                        brand: "TroveAssessment",
+                        workflow_id: 6,
+                        pin_expiry: 120,
+                    },
+                    (error, result) => {
+                        if (result.status != 0) {
+                            return reject({
+                                code: 500,
+                                msg: "Could not send OTP at the moment, please try again",
+                            });
+                        } else {
+                            resolve(result.request_id);
+                        }
+                    }
+                );
+            } catch (error) {
+                console.log(error);
+                error.source = "Create 2F auth => AuthService";
+                reject(error);
+            }
+        });
+    }
+
+    confirm2FAuthCode(body) {
+        return new Promise(async(resolve, reject) => {
+            try {
+                nexmo.verify.check({
+                        request_id: body.requestId,
+                        code: body.code,
+                    },
+                    (error, result) => {
+                        if (result.status != 0) {
+                            return reject({
+                                code: 400,
+                                msg: "Could not validate code, please make a new request.",
+                            });
+                        } else {
+                            resolve(true);
+                        }
+                    }
+                );
+            } catch (error) {
+                error.source = "Confirm 2FAuth Request ==> AuthService";
+                reject(error);
+            }
+        });
+    }
+
+    // TODO: create a login notification
+    notifyLogin(user) {
+        return new Promise(async(resolve, reject) => {});
     }
 }
 

@@ -18,7 +18,7 @@ class WalletService {
     getWallet(userId) {
         return new Promise(async(resolve, reject) => {
             try {
-                let wallet = await Wallet.findOne({ userId })
+                let wallet = await Wallet.findOne({ userId: userId })
                     .then((wallet) => (wallet ? wallet : false))
                     .catch(() => false);
 

@@ -8,9 +8,24 @@ const {
     validateBankDetails,
     validatePasswordUpdate,
 } = require("../validations/user.validation");
+
 const { confirmPassword, checkBankDetails } = require("../utils/userUtils");
 
 const userInstance = new UserService();
+
+exports.getUser = async(req, res, next) => {
+    // console.log(req.user);
+    try {
+        return JsonResponse({
+            res,
+            status: 200,
+            msg: "User fetched",
+            data: { user: req.user, wallet: req.user.wallet },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 exports.updateBasicProfile = async(req, res, next) => {
     try {
