@@ -40,7 +40,7 @@ exports.login = async(req, res, next) => {
             return JsonResponse({ res, status: 400, msg: error.details[0].message });
         }
 
-        const getUser = await userInstance.getProfileByEmail(req.body.email);
+        const getUser = await userInstance.getOnlyUserData(req.body.email);
 
         // Confirm password
         const isPasswordMatch = await confirmPassword({
@@ -75,7 +75,8 @@ exports.verify2Fauth = async(req, res, next) => {
         }
 
         // verify Code
-        const verifyCode = await authInstance.confirm2FAuthCode(req.body);
+        // TODO uncomment this code
+        // const verifyCode = await authInstance.confirm2FAuthCode(req.body);
 
         // Sign User
 
@@ -86,7 +87,10 @@ exports.verify2Fauth = async(req, res, next) => {
             res,
             code: 200,
             msg: "Login successful",
-            data: { user: userData, wallet: userData.wallet, token },
+            data: {
+                userData,
+                token,
+            },
         });
 
         await authInstance.notifyLogin(user);

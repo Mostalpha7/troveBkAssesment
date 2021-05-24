@@ -15,16 +15,20 @@ app.use(loggerMiddleware);
 // Route files
 const auth = require("../routes/auth.route");
 const user = require("../routes/user.route");
+const loan = require("../routes/loan.route");
 
 // Routes
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/user", [Auth], user);
+app.use("/api/v1/loan", [Auth], loan);
 
 app.use(error);
 
 // Default landing endpoint
 app.use("/", (req, res, next) => {
-    res.status(200).send({ message: "Welcome to My App" });
+    res
+        .status(200)
+        .send({ message: "Welcome To mostalpha7@gmail.com Trove Assessment" });
 });
 
 module.exports = app;

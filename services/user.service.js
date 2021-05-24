@@ -1,12 +1,22 @@
 const { User } = require("../models/index.shema");
+
 const WalletService = require("./wallet.service");
+const LoanService = require("./loan.service");
 
 const walletInstance = new WalletService();
+const loanInstance = new LoanService();
 
 class UserService {
     getProfile(user) {
         return new Promise(async(resolve, reject) => {
             try {
+                const toReturn = {
+                    user: {},
+                    wallet: {},
+                    loans: [],
+                    portfolioVals: {},
+                };
+
                 const userData = await User.findOne({ email: user.email })
                     .then((user) => (user ? user : false))
                     .catch(() => false);
@@ -17,9 +27,17 @@ class UserService {
                         msg: "User not found",
                     });
                 }
+
                 // get wallet
-                userData.wallet = await walletInstance.getWallet(userData.userId);
-                resolve(userData);
+                const wallet = await walletInstance.getWallet(userData.userId);
+                var userLoan = await loanInstance.getUserLoan(userData.userId);
+
+                toReturn.user = userData;
+                toReturn.wallet = wallet;
+                toReturn.portfolioVals = wallet.portfolioVals;
+                toReturn.loans = userLoan;
+
+                resolve(toReturn);
             } catch (error) {
                 error.source = "Get profile => UserService";
                 return reject(error);
@@ -27,7 +45,7 @@ class UserService {
         });
     }
 
-    getProfileByEmail(email) {
+    getOnlyUserData(email) {
         return new Promise(async(resolve, reject) => {
             try {
                 const userData = await User.findOne({ email: email })

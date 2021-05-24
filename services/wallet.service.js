@@ -1,5 +1,11 @@
 const { Wallet } = require("../models/index.shema");
+const {
+    calcPortfolioVal,
+    estimateUseAblePortfolioVal,
+} = require("../utils/walletUtils");
+const LoanService = require("./loan.service");
 
+const loanInstance = new LoanService();
 class WalletService {
     createWallet(user) {
         return new Promise(async(resolve, reject) => {
@@ -18,10 +24,18 @@ class WalletService {
     getWallet(userId) {
         return new Promise(async(resolve, reject) => {
             try {
-                let wallet = await Wallet.findOne({ userId: userId })
+                const wallet = await Wallet.findOne({ userId: userId })
                     .then((wallet) => (wallet ? wallet : false))
                     .catch(() => false);
+                const totalPortfolioVal = await calcPortfolioVal({ wallet });
+                var userLoan = await loanInstance.getUserLoan(wallet.userId);
 
+                const useAblePortfolioVal = await estimateUseAblePortfolioVal({
+                    totalPortfolioVal,
+                    userLoan,
+                });
+
+                wallet.portfolioVals = { totalPortfolioVal, useAblePortfolioVal };
                 resolve(wallet);
             } catch (error) {
                 error.source = "Get wallet Service";

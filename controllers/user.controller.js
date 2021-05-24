@@ -14,13 +14,12 @@ const { confirmPassword, checkBankDetails } = require("../utils/userUtils");
 const userInstance = new UserService();
 
 exports.getUser = async(req, res, next) => {
-    // console.log(req.user);
     try {
         return JsonResponse({
             res,
             status: 200,
             msg: "User fetched",
-            data: { user: req.user, wallet: req.user.wallet },
+            data: req.user,
         });
     } catch (error) {
         next(error);
@@ -115,7 +114,6 @@ exports.updateBankInfo = async(req, res, next) => {
 };
 
 exports.updatePassword = async(req, res, next) => {
-    // console.log();
     try {
         const { error } = validatePasswordUpdate(req.body);
         if (error) {

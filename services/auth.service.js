@@ -127,7 +127,6 @@ class AuthService {
                     }
                 );
             } catch (error) {
-                console.log(error);
                 error.source = "Create 2F auth => AuthService";
                 reject(error);
             }
