@@ -9,9 +9,26 @@ const LoanSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    loanPeriod: {
+        type: Number,
+        required: true,
+    },
+    loanObjective: {
+        type: String,
+        required: true,
+    },
     totalAmountReturned: {
         type: Number,
         default: 0,
+    },
+    repaymentAmount: {
+        type: Number,
+        required: true,
+    },
+    // prorated payment schedule
+    paymentSchedule: {
+        type: Array,
+        required: true,
     },
     paymentLog: {
         type: Array,

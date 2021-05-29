@@ -36,7 +36,6 @@ class UserService {
                 toReturn.wallet = wallet;
                 toReturn.portfolioVals = wallet.portfolioVals;
                 toReturn.loans = userLoan;
-
                 resolve(toReturn);
             } catch (error) {
                 error.source = "Get profile => UserService";

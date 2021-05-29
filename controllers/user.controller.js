@@ -15,11 +15,14 @@ const userInstance = new UserService();
 
 exports.getUser = async(req, res, next) => {
     try {
+        const getUserData = await userInstance.getProfile(req.user);
+
+        delete getUserData.loans;
         return JsonResponse({
             res,
             status: 200,
             msg: "User fetched",
-            data: req.user,
+            data: getUserData,
         });
     } catch (error) {
         next(error);

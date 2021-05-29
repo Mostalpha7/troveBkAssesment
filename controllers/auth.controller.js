@@ -47,18 +47,23 @@ exports.login = async(req, res, next) => {
             password: req.body.password,
             user: getUser,
         });
+
         if (!isPasswordMatch) {
             return JsonResponse({ res, status: 400, msg: "Invalid password" });
         }
 
-        const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
+        // TODO: send auth otp request
+        // const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
+
         JsonResponse({
             res,
             status: 200,
             msg: "Please verify otp send to your phone number",
-            data: { requestId },
+            // TODO: uncomment this.
+            // data: { requestId },
         });
     } catch (error) {
+        error.source = "Login controller";
         next(error);
     }
 };

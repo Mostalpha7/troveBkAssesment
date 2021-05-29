@@ -10,8 +10,8 @@ const Auth = async(req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.jwtPrivateKey);
-
-        req.user = await userInstance.getProfile(decoded);
+        const userInfo = await userInstance.getProfile(decoded);
+        req.user = userInfo.user;
 
         next();
     } catch (ex) {

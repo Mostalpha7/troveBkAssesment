@@ -11,17 +11,18 @@ const calcPortfolioVal = ({ wallet }) => {
     return totalSum;
 };
 
-const estimateUseAblePortfolioVal = ({ totalPortfolioVal, userLoan }) => {
-    const useAblePortfolioVal = totalPortfolioVal;
+const estimateAvailablePortfolioVal = ({ totalPortfolioVal, userLoan }) => {
+    var useablePortfolioVal = totalPortfolioVal;
 
     userLoan.forEach((item) => {
         let collateralPortfolioValue = item.collateralPortfolioValue;
-        useAblePortfolioVal -= parseFloat(collateralPortfolioValue);
+        useablePortfolioVal -= parseFloat(collateralPortfolioValue);
     });
-    return useAblePortfolioVal;
+
+    return useablePortfolioVal;
 };
 
 module.exports = {
     calcPortfolioVal,
-    estimateUseAblePortfolioVal,
+    estimateAvailablePortfolioVal,
 };

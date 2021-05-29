@@ -1,7 +1,8 @@
 const { Wallet } = require("../models/index.shema");
 const {
     calcPortfolioVal,
-    estimateUseAblePortfolioVal,
+    estimateAvailablePortfolioVal,
+    estimateUseablePortfolioVal,
 } = require("../utils/walletUtils");
 const LoanService = require("./loan.service");
 
@@ -27,19 +28,43 @@ class WalletService {
                 const wallet = await Wallet.findOne({ userId: userId })
                     .then((wallet) => (wallet ? wallet : false))
                     .catch(() => false);
+
                 const totalPortfolioVal = await calcPortfolioVal({ wallet });
                 var userLoan = await loanInstance.getUserLoan(wallet.userId);
 
-                const useAblePortfolioVal = await estimateUseAblePortfolioVal({
+                const availablePortfolioVal = await estimateAvailablePortfolioVal({
                     totalPortfolioVal,
                     userLoan,
                 });
 
-                wallet.portfolioVals = { totalPortfolioVal, useAblePortfolioVal };
+                const useablePortfolioVal = availablePortfolioVal * 0.6;
+
+                wallet.portfolioVals = {
+                    totalPortfolioVal,
+                    availablePortfolioVal,
+                    useablePortfolioVal,
+                };
                 resolve(wallet);
             } catch (error) {
                 error.source = "Get wallet Service";
                 return reject(error);
+            }
+        });
+    }
+
+    creditWallet({ userId, currentBalance, amount }) {
+        return new Promise(async(resolve, reject) => {
+            try {
+                await Wallet.findOneAndUpdate({ userId }, {
+                    $set: {
+                        balance: parseFloat(currentBalance) + parseFloat(amount),
+                    },
+                }, { new: true });
+
+                resolve(true);
+            } catch (error) {
+                error.source = "Credit wallet ==> WalletService";
+                reject(error);
             }
         });
     }

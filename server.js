@@ -1,6 +1,10 @@
 // Developed by (mostalpha7@gmail.com)
-
 require("dotenv").config();
+if (process.env.envDateEntered == undefined) {
+    console.log("Env variables is required for app to start");
+    return;
+}
+
 const app = require("./startup/routes");
 const http = require("http").createServer(app);
 const db = require("./startup/db");
