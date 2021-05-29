@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const uri = `mongodb+srv://${process.env.mongoDbUsername}:${process.env.mongoDbPassword}@cluster0.2wjb7.mongodb.net/trovelTest?retryWrites=true&w=majority`;
-const url = `mongodb://localhost/trovelTest`;
+const url = `mongodb+srv://${process.env.mongoDbUsername}:${process.env.mongoDbPassword}@cluster0.2wjb7.mongodb.net/trovelTest?retryWrites=true&w=majority`;
+const uri = `mongodb://localhost/trovelTest`;
 
 module.exports = async() => {
     try {
-        await mongoose.connect(url, {
+        await mongoose.connect(process.env.Env == development ? uri : url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
