@@ -52,15 +52,14 @@ exports.login = async(req, res, next) => {
             return JsonResponse({ res, status: 400, msg: "Invalid password" });
         }
 
-        // TODO: send auth otp request
-        // const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
+        // send auth otp request
+        const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 
         JsonResponse({
             res,
             status: 200,
             msg: "Please verify otp send to your phone number",
-            // TODO: uncomment this.
-            // data: { requestId },
+            data: { requestId },
         });
     } catch (error) {
         error.source = "Login controller";
@@ -80,12 +79,11 @@ exports.verify2Fauth = async(req, res, next) => {
         }
 
         // verify Code
-        // TODO uncomment this code
-        // const verifyCode = await authInstance.confirm2FAuthCode(req.body);
+        const verifyCode = await authInstance.confirm2FAuthCode(req.body);
 
         // Sign User
-
         const { user, token } = await authInstance.signIn(req.body);
+
         // Get user details with wallet
         const userData = await userInstance.getProfile(user);
         JsonResponse({

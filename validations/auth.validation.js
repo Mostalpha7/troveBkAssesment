@@ -27,18 +27,7 @@ const validateRegistration = (user) => {
 const validateLogin = (user) => {
     const Schema = Joi.object({
         email: Joi.string().email().required(),
-        password: JoiPasswordComplexity.string()
-            .minOfSpecialCharacters(2)
-            .minOfLowercase(2)
-            .minOfUppercase(1)
-            .minOfNumeric(2)
-            .required()
-            .messages({
-                "password.minOfSpecialCharacters": "Password should contain a minimum of 2 special character",
-                "password.minOfLowercase": "Password should contain a minimun of two lowercase",
-                "password.minOfUppercase": "Password should contain one uppercase ",
-                "password.minOfNumeric": "Password should contain a minimun of two numbers",
-            }),
+        password: Joi.string().required(),
     });
 
     return Schema.validate(user);

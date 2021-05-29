@@ -36,7 +36,6 @@ const UserSchema = new mongoose.Schema({
     nokAddress: { type: String },
 
     // Security
-    emailVerified: { type: Boolean, default: false },
     otp: { type: String },
     otpExpiry: { type: Date },
 
