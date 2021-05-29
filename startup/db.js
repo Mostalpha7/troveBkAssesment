@@ -5,7 +5,7 @@ const uri = `mongodb://localhost/trovelTest`;
 
 module.exports = async() => {
     try {
-        await mongoose.connect(process.env.Env == development ? uri : url, {
+        await mongoose.connect(process.env.Env == "development" ? uri : url, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
@@ -23,7 +23,6 @@ module.exports = async() => {
         console.log(`Database connection established.`);
         return true;
     } catch (error) {
-        console.log("akdsal");
         console.log(error);
         return false;
     }
