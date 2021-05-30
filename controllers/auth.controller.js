@@ -55,6 +55,7 @@ exports.login = async(req, res, next) => {
         // send auth otp request
         // const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 
+        const requestId = "2202002";
         JsonResponse({
             res,
             status: 200,
