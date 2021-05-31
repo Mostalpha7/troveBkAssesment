@@ -36,6 +36,8 @@ class UserService {
                 toReturn.wallet = wallet;
                 toReturn.portfolioVals = wallet.portfolioVals;
                 toReturn.loans = userLoan;
+
+                delete toReturn.loans;
                 resolve(toReturn);
             } catch (error) {
                 error.source = "Get profile => UserService";
@@ -118,6 +120,7 @@ class UserService {
                         accountName: body.accountName,
                         bankName: body.bankName,
                         bankCode: body.bankCode,
+                        bankDetailsEnterd: true,
                     },
                 });
 
