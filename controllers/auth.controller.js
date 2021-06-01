@@ -53,9 +53,8 @@ exports.login = async(req, res, next) => {
         }
 
         // send auth otp request
-        // const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
+        const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 
-        const requestId = "2202002";
         JsonResponse({
             res,
             status: 200,
@@ -80,13 +79,14 @@ exports.verify2Fauth = async(req, res, next) => {
         }
 
         // verify Code
-        // const verifyCode = await authInstance.confirm2FAuthCode(req.body);
+        const verifyCode = await authInstance.confirm2FAuthCode(req.body);
 
         // Sign User
         const { user, token } = await authInstance.signIn(req.body);
 
         // Get user details with wallet
         const userData = await userInstance.getProfile(user);
+
         JsonResponse({
             res,
             code: 200,

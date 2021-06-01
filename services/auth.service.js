@@ -159,11 +159,6 @@ class AuthService {
             }
         });
     }
-
-    // TODO: create a login notification
-    notifyLogin(user) {
-        return new Promise(async(resolve, reject) => {});
-    }
 }
 
 module.exports = AuthService;
