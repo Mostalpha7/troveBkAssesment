@@ -57,7 +57,6 @@ exports.login = async(req, res, next) => {
             constCancel = await authInstance.cancel2FAuthCode(req.body.requestId);
         }
 
-        console.log("alklsa");
         // send auth otp request
         const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 
@@ -65,7 +64,7 @@ exports.login = async(req, res, next) => {
             res,
             status: 200,
             msg: "Please verify otp send to your phone number",
-            // data: { requestId },
+            data: { requestId },
         });
     } catch (error) {
         error.source = "Login controller";

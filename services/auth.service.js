@@ -116,9 +116,6 @@ class AuthService {
                         pin_expiry: 120,
                     },
                     (error, result) => {
-                        console.log(result);
-                        console.log(error);
-
                         if (result.status != 0) {
                             return reject({
                                 code: 500,
