@@ -163,14 +163,15 @@ class AuthService {
         return new Promise(async(resolve, reject) => {
             try {
                 nexmo.verify.check({
-                        request_id: body.requestId,
-                        code: body.code,
+                        request_id: requestId,
+                        code: "error",
                     },
                     (error, result) => {
                         resolve(true);
                     }
                 );
             } catch (error) {
+                error.source = "cancel2FAuthCode => AuthService";
                 reject(error);
             }
         });
