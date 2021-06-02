@@ -58,13 +58,13 @@ exports.login = async(req, res, next) => {
         }
 
         // send auth otp request
-        const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
+        // const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 
         JsonResponse({
             res,
             status: 200,
             msg: "Please verify otp send to your phone number",
-            data: { requestId },
+            // data: { requestId },
         });
     } catch (error) {
         error.source = "Login controller";

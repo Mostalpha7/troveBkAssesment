@@ -167,6 +167,8 @@ class AuthService {
                         code: "error",
                     },
                     (error, result) => {
+                        console.log(result);
+                        console.log(error);
                         resolve(true);
                     }
                 );
