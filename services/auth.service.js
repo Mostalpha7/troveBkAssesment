@@ -118,6 +118,7 @@ class AuthService {
                     (error, result) => {
                         console.log(result);
                         console.log(error);
+
                         if (result.status != 0) {
                             return reject({
                                 code: 500,
@@ -167,8 +168,6 @@ class AuthService {
                         code: "error",
                     },
                     (error, result) => {
-                        console.log(result);
-                        console.log(error);
                         resolve(true);
                     }
                 );

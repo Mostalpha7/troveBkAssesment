@@ -57,8 +57,9 @@ exports.login = async(req, res, next) => {
             constCancel = await authInstance.cancel2FAuthCode(req.body.requestId);
         }
 
+        console.log("alklsa");
         // send auth otp request
-        // const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
+        const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 
         JsonResponse({
             res,
