@@ -52,6 +52,11 @@ exports.login = async(req, res, next) => {
             return JsonResponse({ res, status: 400, msg: "Invalid password" });
         }
 
+        if (req.body.requestId) {
+            // cancel the current otp requestId
+            constCancel = await authInstance.cancel2FAuthCode(req.body.requestId);
+        }
+
         // send auth otp request
         const requestId = await authInstance.create2FAuthCode(getUser.phoneNumber);
 

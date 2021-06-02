@@ -28,6 +28,7 @@ const validateLogin = (user) => {
     const Schema = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().required(),
+        requestId: Joi.string().optional(),
     });
 
     return Schema.validate(user);

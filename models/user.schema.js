@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true },
     type: { type: String, default: "user" },
 
-    // Basic
+    // kyc
     dob: { type: Date },
     gender: { type: String },
     city: { type: String },

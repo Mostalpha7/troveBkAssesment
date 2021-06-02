@@ -159,6 +159,22 @@ class AuthService {
             }
         });
     }
+    cancel2FAuthCode(requestId) {
+        return new Promise(async(resolve, reject) => {
+            try {
+                nexmo.verify.check({
+                        request_id: body.requestId,
+                        code: body.code,
+                    },
+                    (error, result) => {
+                        resolve(true);
+                    }
+                );
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
 }
 
 module.exports = AuthService;
